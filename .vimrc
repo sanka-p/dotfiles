@@ -12,17 +12,28 @@ autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
 call plug#begin(expand('~/.vim/plugged'))
 Plug 'preservim/nerdtree'
 Plug 'preservim/nerdcommenter'
+" post install (yarn install | npm install) then load plugin only for editing supported files
+Plug 'prettier/vim-prettier', {
+  \ 'do': 'yarn install --frozen-lockfile --production',
+  \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'svelte', 'yaml', 'html'] }
 Plug 'arcticicestudio/nord-vim'
+Plug 'lervag/vimtex'
+Plug 'catppuccin/vim', { 'as': 'catppuccin' }
+Plug 'tpope/vim-fugitive'
+Plug 'vim-airline/vim-airline'
 call plug#end()
 
 set termguicolors
-colorscheme nord
+"colorscheme nord
+colorscheme catppuccin_mocha
 
+let g:prettier#autoformat = 1
+let g:prettier#autoformat_require_pragma = 0
 "===============KEYBINDS===============
 
 let mapleader = "\<Space>"
 
-nnoremap <leader>ft :NERDTreeToggle<CR>
+nnoremap <leader>fe :NERDTreeToggle<CR>
 
 " Line moving
 " In normal or insert mode, press Alt-j or Alt-k to move the current line down or up
@@ -34,8 +45,20 @@ inoremap <Esc>k <Esc>:m .-2<CR>==gi
 vnoremap <Esc>j :m '>+1<CR>gv=gv
 vnoremap <Esc>k :m '<-2<CR>gv=gv
 
-inoremap jk <Esc>
-vnoremap jk <Esc>
+inoremap jk <Esc>:w<CR>
+vnoremap jk <Esc>:w<CR>
+
+" Toggle integrated terminal with Ctrl + `
+" nnoremap <C-`> :terminal<CR>
+" tnoremap <C-`> <C-\><C-n>:bd!<CR>
+" inoremap <C-`> <C-\><C-n>:terminal<CR>i
+
+" Enable autocommands
+"augroup AutoSave
+  "autocmd!
+  "" Triggered when leaving insert mode
+  "autocmd InsertLeave * if &modified | silent! write | endif
+"augroup END
 
 " URL: https://vim.wikia.com/wiki/Example_vimrc
 " Authors: https://vim.wikia.com/wiki/Vim_on_Libera_Chat
@@ -58,13 +81,16 @@ set nocompatible
 " contents. Use this to allow intelligent auto-indenting for each filetype,
 " and for plugins that are filetype specific.
 if has('filetype')
-  filetype plugin on
+  filetype plugin indent on
 endif
 
 " Enable syntax highlighting
 if has('syntax')
-  syntax on
+  syntax enable
 endif
+
+" LaTeX Options
+let g:vimtex_view_method = 'zathura' 
 
 "------------------------------------------------------------
 " Must have options {{{1
