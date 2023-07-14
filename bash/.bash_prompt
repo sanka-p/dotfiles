@@ -1,0 +1,31 @@
+# Set colors
+bold=$(tput bold);
+reset=$(tput sgr0);
+black=$(tput setaf 0);
+red=$(tput setaf 1);
+green=$(tput setaf 2);
+yellow=$(tput setaf 3);
+blue=$(tput setaf 4);
+magenta=$(tput setaf 5);
+cyan=$(tput setaf 6);
+white=$(tput setaf 7);
+
+function prev_status {
+    if [ $? -eq 0 ]; then
+         echo -e '✔';
+    else
+         echo -e '✗';
+    fi
+}
+
+# Set terminal prompt
+PS1=''
+PS1+='$(prev_status) ';
+PS1+='${bold}${blue}\u${reset}'; # username
+PS1+='@';
+PS1+='${bold}${blue}\h${reset}'; # hostname
+PS1+=' → ';
+PS1+='${bold}${green}\w${reset}'; # working directory
+PS1+='\n'; # newline
+PS1+='$ ';
+export PS1;
