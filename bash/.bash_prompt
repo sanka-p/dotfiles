@@ -22,7 +22,7 @@ function prev_status {
 PS1=''
 PS1+='$(prev_status) ';
 PS1+='${bold}${blue}\u${reset}'; # username
-PS1+='@';
+PS1+=':';
 PS1+='${bold}${blue}\h${reset}'; # hostname
 PS1+=' → ';
 PS1+='${bold}${green}\w${reset}'; # working directory
