@@ -1,3 +1,7 @@
+# Source git-prompt.sh file from:
+# https://github.com/git/git/blob/master/contrib/completion/git-prompt.sh
+. ~/.git-prompt.sh
+
 # Set colors
 bold=$(tput bold);
 reset=$(tput sgr0);
@@ -10,22 +14,35 @@ magenta=$(tput setaf 5);
 cyan=$(tput setaf 6);
 white=$(tput setaf 7);
 
-function prev_status {
+# Set icons
+git_ico=$'\ue725';
+dir_ico=$'\uf4d3';
+check_ico=$'\u2714';
+cross_ico=$'\u2717';
+
+# Display status of the last command that ran
+function prev_status() {
     if [ $? -eq 0 ]; then
-         echo -e '✔';
+         echo -e "${check_ico}";
     else
-         echo -e '✗';
+         echo -e "${cross_ico}";
     fi
 }
 
+# Display git details
+# Requires a nerd font to work (run ./.nerd-font.sh to install one)
+function git_prompt() {
+  # Check if the current directory is in a Git repository.
+	git rev-parse --is-inside-work-tree &>/dev/null || return;
+
+  echo -e "${git_ico}$(__git_ps1)";
+}
+
 # Set terminal prompt
-PS1=''
-PS1+='$(prev_status) ';
-PS1+='${bold}${blue}\u${reset}'; # username
-PS1+=':';
-PS1+='${bold}${blue}\h${reset}'; # hostname
-PS1+=' → ';
-PS1+='${bold}${green}\w${reset}'; # working directory
-PS1+='\n'; # newline
-PS1+='$ ';
+PS1=""
+#PS1+="$(prev_status) "; # status of prev command
+PS1+="${blue}\u@\h${reset} "; # username@hostname
+PS1+="${green}\w${reset} "; # working directory
+PS1+="${red}$(git_prompt)${reset}"; # git status
+PS1+="\n$ "; # user command
 export PS1;

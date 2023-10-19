@@ -1,39 +1,65 @@
-" Install vim-plug if not found
-if empty(glob('~/.vim/autoload/plug.vim'))
-  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
-    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+"  __  ____  ____  __  __   __ _  ____
+" /  \(  _ \(_  _)(  )/  \ (  ( \/ ___)
+"(  O )) __/  )(   )((  O )/    /\___ \
+" \__/(__)   (__) (__)\__/ \_)__)(____/
+
+"enables intelligent auto-indenting
+if has('filetype')
+  filetype plugin indent on
 endif
 
-" Run PlugInstall if there are missing plugins
-autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
-  \| PlugInstall --sync | source $MYVIMRC
-\| endif
+"auto read when a file is changed from outside
+set autoread
+au FocusGained,BufEnter * checktime
 
-call plug#begin(expand('~/.vim/plugged'))
-Plug 'preservim/nerdtree'
-Plug 'preservim/nerdcommenter'
-" post install (yarn install | npm install) then load plugin only for editing supported files
-Plug 'prettier/vim-prettier', {
-  \ 'do': 'yarn install --frozen-lockfile --production',
-  \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'svelte', 'yaml', 'html'] }
-Plug 'arcticicestudio/nord-vim'
-Plug 'lervag/vimtex'
-Plug 'catppuccin/vim', { 'as': 'catppuccin' }
-Plug 'tpope/vim-fugitive'
-Plug 'vim-airline/vim-airline'
-call plug#end()
+"enable syntax highlighting
+if has('syntax')
+  syntax enable
+endif
 
 set termguicolors
-"colorscheme nord
-colorscheme catppuccin_mocha
+set nobackup
+set nowritebackup
+set colorcolumn=100
+set encoding=utf-8
+set updatetime=300 "time vim waits after last keypress to trigger plugin, setting this too low might cause glitches
+set signcolumn=yes
+set history=1000 "number of previous commands vim remembers
+set tabstop=2 "whitespaces a \t char is worth
+set shiftwidth=2 "whitespaces an indent level is worth
+set softtabstop=2 "whitespaces a tab keypress gives 
+set expandtab "always show whitespace and not \t
+set autoindent "keep new line in the same indent level as previous line
+set smartindent
+set number relativenumber "set hybrid line numbers
+set noerrorbells novisualbell t_vb= tm=500 "remove the annoying beeping
+set hidden "enable opening new buffers w/out saving the current one
+set wildmenu "better command-line completion
+set showcmd "show partial commands in the last line of the screen
+set cmdheight=1 "height of command bar
+set hlsearch "search highlighting
+set incsearch "move the highlight as you add characters to search string
+set lazyredraw "screen will not be redrawn when executing macros (better performance)
+set showmatch "show matching brackets when cursor is over them
+set scrolloff=5 "set number of context lines to display below and above cursor
+set ignorecase smartcase "use case insensitive search, except when using capitals 
+set backspace=indent,eol,start "allow backspacing over indents, eol
+set whichwrap+=<,>,h,l,[,] "move to prevoius/next line after reaching start/end of current line
+set nostartofline "stop certain movements from always going to the first character of a line.
+set ruler "show cursor cell position in status line
+set laststatus=2 "slways show status line
+set confirm "ask to save instead of failing the command
+set notimeout ttimeout ttimeoutlen=200 "quickly time out on keycodes, but never time out on mappings
 
-let g:prettier#autoformat = 1
-let g:prettier#autoformat_require_pragma = 0
-"===============KEYBINDS===============
+" __ _  ____  _  _  ____  __  __ _  ____  ____ 
+"(  / )(  __)( \/ )(  _ \(  )(  ( \(    \/ ___)
+" )  (  ) _)  )  /  ) _ ( )( /    / ) D (\___ \
+"(__\_)(____)(__/  (____/(__)\_)__)(____/(____/
 
 let mapleader = "\<Space>"
 
 nnoremap <leader>fe :NERDTreeToggle<CR>
+nnoremap <leader>ff :NERDTreeFind<CR>
 
 " Line moving
 " In normal or insert mode, press Alt-j or Alt-k to move the current line down or up
@@ -47,184 +73,56 @@ vnoremap <Esc>k :m '<-2<CR>gv=gv
 
 inoremap jk <Esc>:w<CR>
 vnoremap jk <Esc>:w<CR>
+nnoremap <leader>q :wqa<CR>
+nnoremap <leader>w :w!<CR> "fast saving
+command! W execute 'w !sudo tee % > /dev/null' <bar> edit! ":W sudo saves the file
+set pastetoggle=<F11> "use <F11> to toggle between 'paste' and 'nopaste'
+map Y y$ "yank to end of the current line but not the \n char
+nnoremap <C-L> :nohl<CR><C-L> "map redraw screen to also turn off search highlighting until the next search
 
-" Toggle integrated terminal with Ctrl + `
-" nnoremap <C-`> :terminal<CR>
-" tnoremap <C-`> <C-\><C-n>:bd!<CR>
-" inoremap <C-`> <C-\><C-n>:terminal<CR>i
+" Execute the run.sh script
+nnoremap <F5> :w<CR>:!./run.sh %<CR>
 
-" Enable autocommands
-"augroup AutoSave
-  "autocmd!
-  "" Triggered when leaving insert mode
-  "autocmd InsertLeave * if &modified | silent! write | endif
-"augroup END
+" ____  __    _  _   ___  __  __ _  ____ 
+"(  _ \(  )  / )( \ / __)(  )(  ( \/ ___)
+" ) __// (_/\) \/ (( (_ \ )( /    /\___ \
+"(__)  \____/\____/ \___/(__)\_)__)(____/
 
-" URL: https://vim.wikia.com/wiki/Example_vimrc
-" Authors: https://vim.wikia.com/wiki/Vim_on_Libera_Chat
-" Description: A minimal, but feature rich, example .vimrc. If you are a
-"              newbie, basing your first .vimrc on this file is a good choice.
-"              If you're a more advanced user, building your own .vimrc based
-"              on this file is still a good idea.
-
-"------------------------------------------------------------
-" Features {{{1
-"
-" These options and commands enable some very useful features in Vim, that
-" no user should have to live without.
-
-" Set 'nocompatible' to ward off unexpected things that your distro might
-" have made, as well as sanely reset options when re-sourcing .vimrc
-set nocompatible
-
-" Attempt to determine the type of a file based on its name and possibly its
-" contents. Use this to allow intelligent auto-indenting for each filetype,
-" and for plugins that are filetype specific.
-if has('filetype')
-  filetype plugin indent on
+" Install vim-plug if not found
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+        \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 endif
 
-" Enable syntax highlighting
-if has('syntax')
-  syntax enable
-endif
+" Run PlugInstall if there are missing plugins
+autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
+      \| PlugInstall --sync | source $MYVIMRC
+      \| endif
 
-" LaTeX Options
-let g:vimtex_view_method = 'zathura' 
+call plug#begin(expand('~/.vim/plugged'))
+Plug 'preservim/nerdtree'
+Plug 'preservim/nerdcommenter'
+"Plug 'prettier/vim-prettier', {
+      "\ 'do': 'yarn install --frozen-lockfile --production',
+      "\ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'svelte', 'yaml', 'html'] }
+Plug 'catppuccin/vim', { 'as': 'catppuccin' }
+"Plug 'vim-airline/vim-airline'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'christoomey/vim-tmux-navigator'
+call plug#end()
 
-"------------------------------------------------------------
-" Must have options {{{1
-"
-" These are highly recommended options.
+colorscheme catppuccin_mocha
 
-" Vim with default settings does not allow easy switching between multiple files
-" in the same editor window. Users can use multiple split windows or multiple
-" tab pages to edit multiple files, but it is still best to enable an option to
-" allow easier switching between files.
-"
-" One such option is the 'hidden' option, which allows you to re-use the same
-" window and switch from an unsaved buffer without saving it first. Also allows
-" you to keep an undo history for multiple files when re-using the same window
-" in this way. Note that using persistent undo also lets you undo in multiple
-" files even in the same window, but is less efficient and is actually designed
-" for keeping undo history after closing Vim entirely. Vim will complain if you
-" try to quit without saving, and swap files will keep you safe if your computer
-" crashes.
-set hidden
+"let g:prettier#autoformat = 1
+"let g:prettier#autoformat_require_pragma = 0
 
-" Note that not everyone likes working this way (with the hidden option).
-" Alternatives include using tabs or split windows instead of re-using the same
-" window as mentioned above, and/or either of the following options:
-" set confirm
-" set autowriteall
+" use <tab> to trigger completion and navigate to the next complete item
+function! CheckBackspace() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
 
-" Better command-line completion
-set wildmenu
-
-" Show partial commands in the last line of the screen
-set showcmd
-
-" Highlight searches (use <C-L> to temporarily turn off highlighting; see the
-" mapping of <C-L> below)
-set hlsearch
-
-" Modelines have historically been a source of security vulnerabilities. As
-" such, it may be a good idea to disable them and use the securemodelines
-" script, <http://www.vim.org/scripts/script.php?script_id=1876>.
-" set nomodeline
-
-
-"------------------------------------------------------------
-" Usability options {{{1
-"
-" These are options that users frequently set in their .vimrc. Some of them
-" change Vim's behaviour in ways which deviate from the true Vi way, but
-" which are considered to add usability. Which, if any, of these options to
-" use is very much a personal preference, but they are harmless.
-
-" Use case insensitive search, except when using capital letters
-set ignorecase
-set smartcase
-
-" Allow backspacing over autoindent, line breaks and start of insert action
-set backspace=indent,eol,start
-
-" When opening a new line and no filetype-specific indenting is enabled, keep
-" the same indent as the line you're currently on. Useful for READMEs, etc.
-set autoindent
-
-" Stop certain movements from always going to the first character of a line.
-" While this behaviour deviates from that of Vi, it does what most users
-" coming from other editors would expect.
-set nostartofline
-
-" Display the cursor position on the last line of the screen or in the status
-" line of a window
-set ruler
-
-" Always display the status line, even if only one window is displayed
-set laststatus=2
-
-" Instead of failing a command because of unsaved changes, instead raise a
-" dialogue asking if you wish to save changed files.
-set confirm
-
-" Use visual bell instead of beeping when doing something wrong
-set visualbell
-
-" And reset the terminal code for the visual bell. If visualbell is set, and
-" this line is also included, vim will neither flash nor beep. If visualbell
-" is unset, this does nothing.
-set t_vb=
-
-" Enable use of the mouse for all modes
-"if has('mouse')
-"  set mouse=a
-"endif
-
-" Set the command window height to 2 lines, to avoid many cases of having to
-" "press <Enter> to continue"
-set cmdheight=2
-
-" Display line numbers on the left
-set number
-set relativenumber
-
-" Quickly time out on keycodes, but never time out on mappings
-set notimeout ttimeout ttimeoutlen=200
-
-" Use <F11> to toggle between 'paste' and 'nopaste'
-set pastetoggle=<F11>
-
-
-"------------------------------------------------------------
-" Indentation options {{{1
-"
-" Indentation settings according to personal preference.
-
-" Indentation settings for using 4 spaces instead of tabs.
-" Do not change 'tabstop' from its default value of 8 with this setup.
-set shiftwidth=4
-set softtabstop=4
-set expandtab
-
-" Indentation settings for using hard tabs for indent. Display tabs as
-" four characters wide.
-"set shiftwidth=4
-"set tabstop=4
-
-
-"------------------------------------------------------------
-" Mappings {{{1
-"
-" Useful mappings
-
-" Map Y to act like D and C, i.e. to yank until EOL, rather than act as yy,
-" which is the default
-map Y y$
-
-" Map <C-L> (redraw screen) to also turn off search highlighting until the
-" next search
-nnoremap <C-L> :nohl<CR><C-L>
-
-"------------------------------------------------------------
+inoremap <silent><expr> <Tab>
+      \ coc#pum#visible() ? coc#pum#next(1) :
+      \ CheckBackspace() ? "\<Tab>" :
+      \ coc#refresh()
