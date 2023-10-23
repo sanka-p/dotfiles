@@ -1,6 +1,6 @@
 # Source git-prompt.sh file from:
 # https://github.com/git/git/blob/master/contrib/completion/git-prompt.sh
-. ~/.git-prompt.sh
+source ~/.git-prompt.sh
 
 # Set colors
 bold=$(tput bold);
@@ -15,7 +15,7 @@ cyan=$(tput setaf 6);
 white=$(tput setaf 7);
 
 # Set icons
-git_ico=$'\ue725';
+git_ico=$'\ue702';
 dir_ico=$'\uf4d3';
 check_ico=$'\u2714';
 cross_ico=$'\u2717';
@@ -43,6 +43,6 @@ PS1=""
 #PS1+="$(prev_status) "; # status of prev command
 PS1+="${blue}\u@\h${reset} "; # username@hostname
 PS1+="${green}\w${reset} "; # working directory
-PS1+="${red}$(git_prompt)${reset}"; # git status
+PS1+="${red}$(__git_ps1 "(%s)")${reset}"; # git status
 PS1+="\n$ "; # user command
 export PS1;
