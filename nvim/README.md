@@ -21,3 +21,13 @@ I adapted the directory structure from this blog post: https://m4xshen.dev/posts
 |   |   ├── theme.lua
 |   |   ├── ...
 ```
+
+# Plugins
+
+- File explorer: https://github.com/stevearc/oil.nvim
+- File icons: https://github.com/echasnovski/mini.nvim
+- Fuzzy finder: https://github.com/nvim-telescope/telescope.nvim
+- Theme: https://github.com/catppuccin/nvim
+- Autocomplete: coq.nvim??
+- LSP: mason.vim??
+- Git: ??
