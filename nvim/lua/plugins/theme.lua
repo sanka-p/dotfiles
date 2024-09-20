@@ -5,12 +5,9 @@ return {
       priority = 1000,
       opts = {
          flavour = "mocha",
+         init = function()
+            vim.cmd.colorscheme("catppuccin")
+         end,
       }
    },
-   {
-      "LazyVim/LazyVim",
-      opts = {
-        colorscheme = "catppuccin",
-      },
-    },
 }
