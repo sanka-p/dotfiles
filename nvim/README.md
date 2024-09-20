@@ -37,3 +37,7 @@ I adapted the directory structure from this blog post: https://m4xshen.dev/posts
 - ripgrep: https://github.com/BurntSushi/ripgrep
 - fd: https://github.com/sharkdp/fd
 - treesitter-cli: npm install -g tree-sitter-cli 
+
+# TODO
+
+[ ] - 

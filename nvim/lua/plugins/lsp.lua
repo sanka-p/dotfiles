@@ -11,11 +11,10 @@ return {
         opts = {
             ensure_installed = {
                "html",
-               "cssls",
-               "tsserver",
-               "eslint",
-               "tailwindcss",
                "jdtls",
+               "eslint", -- javascript, typescript
+               "cssls",
+               "tailwindcss",
             },
          },
     },
