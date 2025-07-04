@@ -1,0 +1,51 @@
+@import "mocha.css";
+
+* {
+  all: initial; /* Remove GTK styles */
+  font-family: 'FiraCode Nerd Font';
+  font-size: 16px;
+}
+
+#waybar {
+  background: @transparent;
+}
+
+.modules-left,
+.modules-right {
+  color: @mauve;
+  border: solid;
+  border-width: 2px;
+  border-color: @mauve;
+  border-radius: 10px;
+}
+
+#backlight,
+#pulseaudio,
+#bluetooth,
+#network,
+#battery, 
+#clock,
+#custom-powermenu {
+  margin: 4px 8px;
+}
+
+#battery.charging { color: @green; }
+#battery.warning { color: @peach; }
+#battery.critical { color: @red; }
+
+#workspaces button:hover{
+  background: @base;
+}
+
+#workspaces button.active {
+  background: @mauve;
+  color: @text;
+}
+
+#workspaces button {
+  background: @transparent;
+  margin: 4px;
+  padding: 2px 6px;
+  color: @mauve;
+  border-radius: 8px;
+}

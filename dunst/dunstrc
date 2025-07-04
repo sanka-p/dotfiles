@@ -1,0 +1,30 @@
+[global]
+format = "<b>%a\n%s</b>\n%b"
+frame_color = "#cba6f7"
+separator_color= frame
+highlight = "#89b4fa"
+icon_path = "~/.local/share/icons/"
+icon_theme = Papirus-Dark
+enable_recursive_icon_lookup = true
+
+origin = bottom-right
+offset = 30x30
+frame_width = 2
+font = "FiraCode Nerd Font 10"
+corner_radius = 10
+
+[urgency_low]
+    background = "#1e1e2e"
+    foreground = "#cdd6f4"
+    timeout = 5
+
+[urgency_normal]
+    background = "#1e1e2e"
+    foreground = "#cdd6f4"
+    timeout = 5
+
+[urgency_critical]
+    background = "#1e1e2e"
+    foreground = "#cdd6f4"
+    frame_color = "#fab387"
+    timeout = 0

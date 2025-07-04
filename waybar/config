@@ -1,0 +1,76 @@
+{
+  "layer": "top",
+    "modules-left": ["hyprland/workspaces"],
+    "modules-right": [
+	    "bluetooth",
+	    "network", 
+	    "backlight",
+	    "pulseaudio",
+      "battery",
+      "clock",
+      "custom/powermenu"
+    ],
+    "margin": "4px 10px 4px 10px",
+    "hyprland/workspaces" : {
+      "format": "{icon}",
+      "on-scroll-up": "hyprctl dispatch workspace e+1",
+      "on-scroll-down": "hyprctl dispatch workspace e-1"
+    },
+    "hyprland/window": {
+      "separate-outputs": true
+    },
+    "clock": {
+      "format": "󰥔 {:%H:%M}",
+      "tooltip": true,
+	    "tooltip-format": "{:%Y-%m-%d}",
+    },
+    "backlight": {
+      "device": "intel_backlight",
+      "format": "<span>{icon}</span> {percent}%",
+      "format-icons": ["", "", "", "", "", "", "", "", ""]
+    },
+    "pulseaudio": {
+      "format": "<span>{icon}</span> {volume}%",
+      "format-muted": "",
+      "tooltip": false,
+      "format-icons": {
+        "headphone": "󰋋",
+        "default": ["", ""]
+      },
+      "scroll-step": 1,
+    },
+    "bluetooth": {
+      "format": "<span></span> {status}",
+      "format-disabled": "", // an empty format will hide the module
+      "format-off": "<span></span> Off",
+      "format-on": "<span></span> On",
+      "format-connected": "<span></span> {device_alias}",
+      "format-connected-battery": "<span></span> {device_alias}({device_battery_percentage}%)",
+      "format-no-controller": "", 
+      "tooltip-format-enumerate-connected": "{device_alias} {device_address}"
+    },
+    "network": {
+      "interface": "wlp0s20f3",
+      "format": "{ifname}",
+      "format-wifi": "<span> </span> {essid}({signalStrength}%)",
+      "format-ethernet": "󰈀 Connected",
+      "format-disconnected": "<span>󰖪</span> Disconnected",
+      "tooltip": false,
+      "max-length": 50
+    },
+    "battery": {
+      "format": "{icon} {capacity}%",
+      "format-icons": ["󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
+      "states": {
+        "warning": 30,
+	      "critical": 15
+      },
+      "format-charging": "󰂄 {capacity}%",
+      "tooltip": false,
+    },
+    "custom/powermenu": {
+      "format": "⏻ ",
+      "tooltip": false,
+      "on-click": "fuzzel-powermenu.sh"
+    },
+}

@@ -1,0 +1,8 @@
+[user]
+	name = Sanka Peeris
+	email = sankapeeris360@gmail.com
+	username = sanka-p
+[init]
+	defaultBranch = main
+[core]
+	editor = vim
