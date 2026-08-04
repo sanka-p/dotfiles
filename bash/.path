@@ -1,14 +1,21 @@
+export EDITOR="nvim"
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="/opt/oss-cad-suite/bin:$PATH"
+export PATH="$HOME/.local/lib/synlig:$PATH"
+export PATH="/opt/Surelog/bin/bin:$PATH"
 export PATH="/opt/flutter/bin:$PATH"
-export PATH="$HOME/.local/riscv-rp2350/bin:$PATH"
+#export PATH="$HOME/.local/riscv-rp2350/bin:$PATH"
 export PATH="$HOME/.npm-global/bin:$PATH"
 export ANDROID_HOME=$HOME/Android/Sdk
 export PATH=$PATH:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools
 export NDK_HOME="$ANDROID_HOME/ndk/$(ls -1 $ANDROID_HOME/ndk)"
-export PICO_SDK_PATH="$HOME/projects/pico/pico-sdk"
+#export PICO_SDK_PATH="$HOME/projects/pico/pico-sdk"
 # Custom scripts
-export PATH="$PATH:$HOME/.scripts/"
+#export PATH="$PATH:$HOME/.scripts/"
+# Install Ruby Gems to ~/gems
+export GEM_HOME="$HOME/gems"
+export PATH="$GEM_HOME/bin:$PATH"
+export PATH="$HOME/.local/share/gem/ruby/3.4.0/bin:$PATH"
 
 # >>> mamba initialize >>>
 # !! Contents within this block are managed by 'mamba shell init' !!
