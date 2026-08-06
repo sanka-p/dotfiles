@@ -1,0 +1,23 @@
+# greetd config -- source of truth lives here, in the dotfiles repo.
+#
+# NOT symlinked into /etc. greetd parses this file as root, and the
+# `user` field below decides which account the session runs as -- so a
+# symlink into a user-writable path would let anything running as your
+# user escalate to root at boot. Install a root-owned copy instead:
+#
+#   sudo install -Dm644 -o root -g root \
+#     ~/projects/dotfiles/greetd/config.toml /etc/greetd/config.toml
+#
+# Re-run that after editing this file.
+
+[terminal]
+vt = 1
+
+[default_session]
+# --cmd must be start-hyprland, NOT Hyprland. Launching the Hyprland binary
+# directly warns "started without start-hyprland which is strongly not
+# recommended" -- the wrapper sets up the session (dbus, systemd env, portals)
+# before exec'ing the compositor. /usr/share/wayland-sessions/hyprland.desktop
+# uses the same entry point.
+command = "tuigreet --time --remember --cmd start-hyprland"
+user = "greeter"

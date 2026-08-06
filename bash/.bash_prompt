@@ -1,4 +1,4 @@
-source ~/.scripts/git-prompt.sh
+[ -r ~/.git-prompt.sh ] && source ~/.git-prompt.sh
 
 # Set colors
 bold=$(tput bold);
@@ -38,9 +38,6 @@ function git_prompt() {
 
 # Set terminal prompt
 PS1=''
-#PS1+="\$(prev_status) "; # status of prev command
-#PS1+="${cyan}\u@\h${reset} "; # username@hostname
-#PS1+="${yellow}${dir_ico} \w${reset} "; # working directory
 PS1+="${yellow} \w${reset} "; # working directory
 PS1+="${magenta}\$(git_prompt)${reset}"; # git status
 PS1+="\n > "; # user command
