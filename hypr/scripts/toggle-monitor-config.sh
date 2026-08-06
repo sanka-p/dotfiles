@@ -1,70 +1,51 @@
 #!/usr/bin/env bash
+# Switch the active monitor preset.
+#
+# Presets themselves live in ~/.config/hypr/monitors.lua; this only records which
+# one is active. Keep `presets` below in sync with the `order` list in that file.
+#
+#   toggle-monitor-config.sh          cycle to the next preset
+#   toggle-monitor-config.sh EFAC     select a preset by name
+
 set -euo pipefail
 
-conf="${HOME}/.config/hypr/monitors.conf"
-preset="${1:-}"
+presets=(HOME EFAC)
 
-if [[ ! -f "$conf" ]]; then
-  echo "Missing monitors.conf at $conf" >&2
-  exit 1
+state_dir="${XDG_STATE_HOME:-${HOME}/.local/state}/hypr"
+state_file="${state_dir}/monitor-preset"
+desired="${1:-}"
+
+current="${presets[0]}"
+if [[ -r "$state_file" ]]; then
+  read -r current < "$state_file" || true
 fi
 
-awk -v desired="$preset" '
-{
-  lines[NR] = $0
-  if (match($0, /^# \[([^]]+)\]/, m)) {
-    headerCount++
-    headerName[headerCount] = m[1]
-  }
-  headerForLine[NR] = headerCount
-  if (headerForLine[NR] > 0 && $0 ~ /^monitor=/) {
-    activeHeader[headerForLine[NR]] = 1
-  }
+index_of() {
+  local name=$1 i
+  for i in "${!presets[@]}"; do
+    if [[ "${presets[$i]}" == "$name" ]]; then
+      echo "$i"
+      return 0
+    fi
+  done
+  return 1
 }
-END {
-  if (headerCount == 0) {
-    for (i = 1; i <= NR; i++) print lines[i]
-    exit 0
-  }
 
-  target = 0
-  if (desired != "") {
-    for (i = 1; i <= headerCount; i++) {
-      if (headerName[i] == desired) {
-        target = i
-        break
-      }
-    }
-    if (target == 0) {
-      print "Unknown preset: " desired > "/dev/stderr"
-      exit 2
-    }
-  } else {
-    active = 0
-    for (i = 1; i <= headerCount; i++) {
-      if (activeHeader[i]) {
-        active = i
-        break
-      }
-    }
-    if (active == 0) active = 1
-    target = (active % headerCount) + 1
-  }
+if [[ -n "$desired" ]]; then
+  if ! index_of "$desired" > /dev/null; then
+    echo "Unknown preset: $desired" >&2
+    exit 2
+  fi
+  target=$desired
+else
+  if ! current_index=$(index_of "$current"); then
+    current_index=0
+  fi
+  target="${presets[$(((current_index + 1) % ${#presets[@]}))]}"
+fi
 
-  for (i = 1; i <= NR; i++) {
-    line = lines[i]
-    h = headerForLine[i]
-    if (h > 0) {
-      if (h == target) {
-        sub(/^#monitor=/, "monitor=", line)
-      } else {
-        sub(/^monitor=/, "#monitor=", line)
-      }
-    }
-    print line
-  }
-}
-' "$conf" > "${conf}.tmp"
+mkdir -p "$state_dir"
+printf '%s\n' "$target" > "$state_file"
 
-mv "${conf}.tmp" "$conf"
 hyprctl reload
+echo "Monitor preset: $target"
