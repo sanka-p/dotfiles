@@ -4,12 +4,12 @@
 # Presets themselves live in ~/.config/hypr/monitors.lua; this only records which
 # one is active. Keep `presets` below in sync with the `order` list in that file.
 #
-#   toggle-monitor-config.sh          cycle to the next preset
-#   toggle-monitor-config.sh EFAC     select a preset by name
+#   toggle-monitor-config.sh              cycle to the next preset
+#   toggle-monitor-config.sh EXT_RIGHT    select a preset by name
 
 set -euo pipefail
 
-presets=(HOME EFAC)
+presets=(HOME EXT_RIGHT EXT_LEFT MIRROR)
 
 state_dir="${XDG_STATE_HOME:-${HOME}/.local/state}/hypr"
 state_file="${state_dir}/monitor-preset"

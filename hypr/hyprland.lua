@@ -19,6 +19,14 @@ hl.on("hyprland.start", function()
     hl.exec_cmd("blueman-applet")
 end)
 
+-- Pop the display mode menu when an external monitor is plugged in
+hl.on("monitor.added", function(monitor)
+    if monitor and monitor.name == "eDP-1" then
+        return
+    end
+    hl.exec_cmd("~/.config/hypr/scripts/display-menu.sh --hotplug")
+end)
+
 -- Lock screen at login is handled by greetd/tuigreet -- lock on demand with SUPER + L
 
 

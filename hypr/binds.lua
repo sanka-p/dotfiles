@@ -21,8 +21,8 @@ hl.bind("Print",                    hl.dsp.exec_cmd("hyprshot -m region"))
 hl.bind("SHIFT + Print",            hl.dsp.exec_cmd("hyprshot -m output"))
 hl.bind(mainMod .. " + Print",      hl.dsp.exec_cmd("hyprshot -m window"))
 
--- Cycle monitor presets
-hl.bind(mainMod .. " + F7", hl.dsp.exec_cmd("~/.config/hypr/scripts/toggle-monitor-config.sh"))
+-- Display mode menu (extend/mirror/laptop-only, move workspace between monitors)
+hl.bind(mainMod .. " + F7", hl.dsp.exec_cmd("~/.config/hypr/scripts/display-menu.sh"))
 
 -- Move focus with mainMod + arrow keys
 hl.bind(mainMod .. " + left",  hl.dsp.focus({ direction = "left" }))
